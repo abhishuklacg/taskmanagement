@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { DocumentProvider, useDocumentContext } from './Context/DocumentContext';
+import DocumentCard from './components/DocumentCard';
+import Spinner from './components/Spinner';
+import ImageOverlay from './components/ImageOverlay';
+import "./App.css";
 
-function App() {
+const App: React.FC = () => {
+  const { docs, isSaving, lastSaved } = useDocumentContext();
+
+  const getTimeSinceLastSave = () => {
+    if (!lastSaved) return 'Never';
+    const secondsAgo = Math.floor((new Date().getTime() - lastSaved.getTime()) / 1000);
+    return `${secondsAgo} seconds ago`;
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isSaving ? <Spinner /> : <p>Last saved: {getTimeSinceLastSave()}</p>}
+
+      <div className="documents-grid">
+        {docs.map((doc, index) => (
+          <DocumentCard key={doc.type} doc={doc} index={index} />
+        ))}
+      </div>
+
+      <ImageOverlay />
     </div>
   );
-}
+};
 
-export default App;
+const AppWrapper: React.FC = () => (
+  <DocumentProvider>
+    <App />
+  </DocumentProvider>
+);
+
+export default AppWrapper;
