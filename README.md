@@ -34,5 +34,5 @@ Docker Setup:
 
 A Dockerfile is included to containerize the app. You can also use docker-compose.yml to run the app as a microservice.
 To start the app with Docker:
-bash
+
 docker-compose up --build
