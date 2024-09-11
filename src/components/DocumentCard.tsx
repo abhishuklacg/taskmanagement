@@ -26,7 +26,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ doc, index }) => {
     >
       <div className="image-container">
         <img
-          src={`/assets/${doc.type}.${doc.extension}`}
+          src={doc.thumbnail}
           alt={doc.title}
           className="thumbnail"
         />

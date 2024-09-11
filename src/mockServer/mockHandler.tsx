@@ -9,11 +9,11 @@ interface Document {
 }
 
 const initialDocuments: Document[] = [
-  { type: 'bankdraft', title: 'Bank Draft', position: 0, thumbnail: '/assets/bankdraft.png' },
-  { type: 'bill-of-lading', title: 'Bill of Lading', position: 1, thumbnail: '/assets/billoflading.png' },
-  { type: 'invoice', title: 'Invoice', position: 2, thumbnail: '/assets/invoice.png' },
+  { type: 'bankdraft', title: 'Bank Draft', position: 0, thumbnail: '/assets/bankdraft1.jpeg' },
+  { type: 'bill-of-lading', title: 'Bill of Lading', position: 1, thumbnail: '/assets/billoflanding.jpeg' },
+  { type: 'invoice', title: 'Invoice', position: 2, thumbnail: '/assets/billofexchange.jpeg' },
   { type: 'bank-draft-2', title: 'Bank Draft 2', position: 3, thumbnail: '/assets/bankdraft2.png' },
-  { type: 'bill-of-lading-2', title: 'Bill of Lading 2', position: 4, thumbnail: '/assets/billoflading2.png' },
+  { type: 'bill-of-lading-2', title: 'Bill of Lading 2', position: 4, thumbnail: '/assets/billofexchange2.jpeg' },
 ];
 
 const getDocuments = (): Document[] => {
