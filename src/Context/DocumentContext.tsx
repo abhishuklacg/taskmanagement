@@ -5,6 +5,7 @@ interface Document {
   title: string;
   position: number;
   extension: string;
+  thumbnail:string;
 }
 
 interface DocumentContextType {

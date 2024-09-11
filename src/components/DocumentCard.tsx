@@ -7,6 +7,7 @@ interface DocumentCardProps {
     title: string;
     position: number;
     extension: string;
+    thumbnail : string;
   };
   index: number;
 }
@@ -21,7 +22,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ doc, index }) => {
       onDragStart={() => handleDragStart(doc)}
       onDrop={(e) => handleDrop(e, index)}
       onDragOver={(e) => e.preventDefault()}
-      onClick={() => setSelectedImage(`/assets/${doc.type}.${doc.extension}`)}
+      onClick={() => setSelectedImage(doc.thumbnail)} 
     >
       <div className="image-container">
         <img
