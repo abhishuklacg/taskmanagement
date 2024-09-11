@@ -4,24 +4,22 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-async function enableMocking() {
-  if (process.env.NODE_ENV === 'development') {
-    const { worker } = await import('./mockServer/mockHandler');
 
-    return worker.start({
-      serviceWorker: {
-        url: '/mockServiceWorker.js',
-        options: {
-          updateViaCache: 'none', 
-        },
+async function enableMocking() {
+  const { worker } = await import('./mockServer/mockHandler');
+  return worker.start({
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+      options: {
+        updateViaCache: 'none', 
       },
-      onUnhandledRequest: 'bypass',
-    }).catch((error) => {
-      console.error('Failed to start MSW:', error);
-    });
-  }
-  return Promise.resolve();
+    },
+    onUnhandledRequest: 'bypass',
+  }).catch((error) => {
+    console.error('Failed to start MSW:', error);
+  });
 }
+
 
 async function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
