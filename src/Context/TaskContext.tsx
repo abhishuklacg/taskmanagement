@@ -1,4 +1,5 @@
 import React, { useContext, createContext, useState, useEffect, ReactNode } from "react";
+
 export interface Task {
   id: number;
   title: string;
@@ -9,11 +10,13 @@ export interface Task {
 
 export interface TaskContextType {
   tasks: Task[];
+  filteredTasks: Task[];
   addTask: (title: string, description: string, category: string) => void;
   deleteTask: (id: number) => void;
   toggleDone: (id: number) => void;
+  searchByCategory: (category: string) => void;
+  resetSearch: () => void;
 }
-
 
 const initialTasks  = [
   {
@@ -74,61 +77,66 @@ const initialTasks  = [
   }
 ]
 
-
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
-
 
 export const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
-
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
 
   useEffect(() => {
-    if(initialTasks){
-      setTasks(initialTasks)
-    }
-  },[])
+    setTasks(initialTasks);
+    setFilteredTasks(initialTasks); 
+  }, []);
 
   const addTask = (title: string, description: string, category: string) => {
     const newTask: Task = {
-      id: tasks.length + 1,  
+      id: tasks.length + 1,
       title,
       description,
       category,
-      status: "pending",  
+      status: "pending"
     };
-  
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
+    setFilteredTasks(updatedTasks);
   };
-  
 
   const toggleDone = (id: number) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, status: task.status === "pending" ? "done" : "pending" } : task
-      )
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, status: task.status === "pending" ? "done" : "pending" } : task
     );
+    setTasks(updatedTasks);
+    setFilteredTasks(updatedTasks); 
   };
-  
 
   const deleteTask = (id: number) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
+    setFilteredTasks(updatedTasks); 
   };
-  
+
+  const searchByCategory = (category: string) => {
+    const filtered = tasks.filter((task) => task.category.toLowerCase() === category.toLowerCase());
+    setFilteredTasks(filtered);
+  };
+
+  const resetSearch = () => {
+    setFilteredTasks(tasks);
+  };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask, deleteTask, toggleDone }}>
+    <TaskContext.Provider
+      value={{ tasks, filteredTasks, addTask, deleteTask, toggleDone, searchByCategory, resetSearch }}
+    >
       {children}
     </TaskContext.Provider>
   );
 };
 
-
-
 export const useTaskContext = () => {
   const context = useContext(TaskContext);
   if (!context) {
-    throw new Error("Context not intitialised properly.");
+    throw new Error("useTaskContext must be used within a TaskProvider");
   }
-
   return context;
 };
